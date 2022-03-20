@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh">
+ <head>
+   <meta charset="gb2312">
+   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+   <title>2021/3/7 yly</title>
+   <style>
+      *{
+         margin:0;padding:0;list-style:none
+      }
+      a{
+        text-decoration:none;color:#666;
+      }
+      .cf:after{
+        content:'';height:0;display:block;visibility:none;clear:both;
+       }
+      body,html{
+         height:100%;background:#f3f5f7;
+      }
+      .p{
+            width:100px;height:100px;border:1px solid red;margin:100px auto;
+            position:relative;
+        }
+      .c{
+           width:50px;height:50px;background:red;
+           position:absolute;left:10px;top:10px
+        }
+      .test{
+           width:1200px;margin:0 auto;border:1px solid green;
+       }
+      .test .list{
+          width:800px;border:1px solid #ccc;margin:0 auto;
+       }
+      .test .item{
+          margin-left:20px;width:100px;height:20px;float:left;
+       }
+      .test .item:nth-child(2n){
+         background:rgba(25,55,55,.4);
+       }
+      .drag{
+          width:60px;height:80px;background:rgba(255,60,30,.7);
+          position:absolute;left:200px;top:600px;
+       }
+      .del{
+          display:block;
+          width:100px;height:50px;background:rgba(255,24,24,.5);
+          margin:10px auto;
+          font-size:16px;color:#666;font-style:italic;font-weight:bold;
+          over-flow:hidden;
+       }
+    
+      .test .touzi{
+          width:800px;height:200px;border:1px solid red;margin:0 auto 20px;
+       }
+     
+      .header{
+          width:1200px;height:60px;background:#fff;
+          margin:30px auto;overflow:hidden;
+          position:relative;
+       }
+      .header .logo{
+          width:40px;height:40px;overflow:hidden;background:#eee;border-radius:50%;
+          font-size:20px;line-height:40px;text-align:center;color:#f01414;
+          margin-left:20px;margin-top:10px;
+       }
+      .header .title{
+         /*width:40%;height:40px;background:#eee;*/
+         position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;
+         font-size:20px;text-align:center;line-height:60px;font-family:"微软雅黑";
+       }
+      .nav{
+         width:1200px;height:80px;background:#fff;margin:10px auto;
+         display:flex;align-items:center;justify-content:center;
+      }
+      .nav .link{
+         padding:0 30px;height:80px;line-height:80px;
+         font-size:18px;color:#000;
+      }
+    
+      .nav .link:hover {
+         background:rgba(0,155,122,.5);color:#fff;
+      }
+      .link.active{
+        background:rgba(0,155,122,.5);color:#fff;
+      }
+      .nav .menu{
+        width:100px;text-align:center;
+      }
+      .nav .list{
+        background:#fff;margin-left:-30px;
+        display:none;
+      }
+     .nav .menu:hover .list{
+        display:block;
+     }
+     .nav .item{width:100px;height:30px;line-height:30px;color:#666;background:#fff;}
+
+
+     .slider{
+        width:1200px;height:300px;border:1px solid red;
+        margin:10px auto;overflow:hidden;position:relative;
+     }
+     .slider .list{
+	width:2200px;position:absolute;left:0;top:0;
+     }
+     .slider .item{
+	width:398px;height:298px;border:1px solid green;
+        font-size:30px;text-align:center;line-height:300px;
+        float:left;
+     }
+
+     
+
+     .footer{
+         width:1200px;height:50px;background:#fff;margin:0 auto;
+     }
+     .footer p{
+        width:100%;height:100%;
+        line-height:50px;text-align:center;background:#666;
+     }
+   </style>
+ </head>
+ <body>
+    <header class="header">
+      <div class="logo">GD</div>
+      <div class="title">杭州耕德自动化</div>
+    </header>
+    <nav class="nav">
+        <a href="https://www.baidu.com" target="_blank" class="link">百度</a>
+        <div class="menu link">菜单
+          <ul class="list">
+            <li class="item link">你好1</li>
+            <li class="item link">你好2</li>
+            <li class="item link">你好3</li>
+            <li class="item link">你好4</li>
+          </ul>
+        </div>
+        <a href="javascript:;" class="link">你好</a>
+        <a href="javascript:;" class="link">我的</a>
+        <a href="javascript:;" class="link">名字是</a>
+        <a href="javascript:;" class="link">你好</a>
+    </nav>
+    <div class="slider" id="slider">
+        <ul class="list" id="slider-list">
+           <li class="item">
+              <a class="link">1</a>
+           </li>
+           <li class="item">
+              <a class="link">2</a>
+           </li>
+           <li class="item">
+              <a class="link">3</a>
+           </li>
+           <li class="item">
+              <a class="link">4</a>
+           </li>
+           <li class="item">
+              <a class="link">5</a>
+           </li>
+        </ul>
+    </div>
+    <div class="test" id="test">
+      <div class="p" id="p">点击
+         <div class="c" id="c">点击</div>
+      </div>
+      <div class="drag" id="drag">拖动</div>
+      <button class="del" id="del"><del>删除列表</del></button>
+      <ul class="list cf"></ul>
+      <div class="touzi">骰子。。。</div>
+    </div>
+    <footer class="footer"><p><span style="font-family:'微软雅黑'">&copy;</span>版权所有&nbsp;&nbsp;2021年3月10</p></footer>
+
+    <script>
+       var op=document.getElementById("p"),
+           oc=document.getElementById("c");
+       var arr=["red","orange","yellow","green","gray","blue","purple"],
+           arr1=["红","橙","黄","绿","灰","蓝","紫"],
+           now=0;
+        console.log(arr1)
+       //点击生成列表
+       oc.addEventListener('click',function(e){
+           e.stopPropagation();
+           now=now==6?0:now+1;
+           console.log(now)
+           op.style.borderColor=arr[now];
+           this.style.background=arr[now];
+           this.innerText=arr1[now];
+           this.parentNode.style.left=now*20+'px'
+           createLi()
+       })
+       var j=0;
+       function createLi(){
+         var oUl=document.getElementById('test').getElementsByTagName('Ul')[0];
+         console.log(oUl)
+         for(var i=0;i<10;i++){
+          j++;
+          var oli=document.createElement('li')
+          oli.className='item'
+          oli.innerHTML=j;
+          jump(oli,j)
+          oUl.appendChild(oli)
+         }
+       }
+       function jump(el,index){
+         el.addEventListener('click',()=>{
+            alert(`this is ${index}`)
+         })
+       }
+ 
+       var bl=true;
+       op.addEventListener('click',function(){
+          bl=!bl;
+          if(bl){
+            document.getElementById('drag').style.display="block"
+          }else{
+            document.getElementById('drag').style.display="none"
+          }
+       })
+ 
+       //删除列表
+       var del=document.querySelector('#del')
+       del.addEventListener('click',function(){
+          var tet=document.getElementById('test');
+          var oul=tet.getElementsByTagName('ul')[0];
+          oul.innerHTML=''
+       })
+    </script>
+    <script>
+    //拖拽
+    (function(){
+	var el=document.getElementById("drag");
+        var x=0,y=0;
+        el.addEventListener('mousedown',function(e){
+          e.preventDefault()
+          x=e.clientX-this.offsetLeft;
+          y=e.clientY-this.offsetTop;
+         document.addEventListener('mousemove',elmove)
+         document.addEventListener('mouseup',elup)
+        })
+
+       function elmove(e){
+         //e.preventDefault()
+         el.style.left=e.clientX-x+'px';
+         el.style.top=e.clientY-y+'px'
+       }
+       function elup(e){
+         document.removeEventListener('mousemove',elmove)
+         //this.removeEventListener('mouseup',elup)
+       }
+    })()
+    </script>
+    <script>
+      //move函数
+     
+
+
+
+
+ 
+    </script>
+    <script>
+       //滚动
+       (function(){
+           var el=document.getElementById("slider-list");
+          el.appendChild(el.children[0].cloneNode(true))
+          el.insertBefore(el.children[4].cloneNode(true),el.children[0])
+          el.style.left='-200px'
+           var timer=setInterval(function(){
+             //el.offsetLeft=100
+           //el.style.left='200px'
+            el.style.left=el.offsetLeft+5+'px'
+            if(el.style.left==0){
+                 el.style.left='1600px';
+            }
+           },30)
+       })()
+       
+    </script>
+    
+ </body>
+</html>
